@@ -1,0 +1,23 @@
+#ocean {
+    height: 555px;
+    width: 1255px;
+    position: relative;
+    background-color: aquamarine;
+}
+
+.player {
+    height: 70px;
+    width: 70px;
+    position: absolute;
+    bottom: 20px;
+    right: 600px;
+    background-image: url('./images/player.png');
+
+}
+
+.enemy {
+    height: 75px;
+    width: 70px;
+    background-image: url('./images/enemy.png');
+    position: absolute;
+}
