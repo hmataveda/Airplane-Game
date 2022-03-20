@@ -22,6 +22,7 @@ var enemies = [{
     }
 
 ]
+var missiles = [];
 
 function drawPlayer() {
     document.querySelector('.player').style.right = player.right + "px";
@@ -33,7 +34,16 @@ function drawEnimies(i) {
     document.querySelectorAll('.enemy')[i].style.top = enemies[i]['top'] + "px";
 }
 
+function drawMissiles() {
+    var content = '';
+    for (var i = 0; i < missiles.length; i++) {
+        content += `<div class = "missile" style = "right:${missiles[i].right}px ; bottom: ${missiles[i].bottom}px"></div>`;
+    }
+    document.querySelector('#missiles').innerHTML = content;
+}
+
 document.onkeydown = function(e) {
+    console.log(e);
     if (e.code == "ArrowLeft" && player.right < 1190) {
         player.right += 10;
     }
@@ -46,20 +56,32 @@ document.onkeydown = function(e) {
     if (e.code == "ArrowUp" && player.bottom < 150) {
         player.bottom += 10;
     }
+    if (e.code == "Space") {
+        missiles.push({
+            right: player.right + 23,
+            bottom: player.bottom + 65
+        })
+        drawMissiles();
+    }
+
     drawPlayer();
 }
 
-function moveEninmies() {
+function freeMove() {
     for (var i = 0; i < enemies.length; i++) {
-        if (enemies[i]['top'] > 550) {
-
+        if (enemies[i]['top'] > 500) {
             enemies[i]['top'] = 0;
         }
-        enemies[i]['top'] += 5;
-
+        enemies[i]['top'] += 2;
         drawEnimies(i);
+    }
+    for (var i = 0; i < missiles.length; i++) {
+        missiles[i]['bottom'] += 2;
     }
 
 }
 
-var timer = setInterval(moveEninmies, 1000);
+var timer = setInterval(function() {
+    freeMove();
+    drawMissiles();
+}, 10);
