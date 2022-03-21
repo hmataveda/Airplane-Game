@@ -1,7 +1,6 @@
 var player = {
     right: 600,
-    bottom: 10,
-
+    top: 470,
 }
 
 var enemies = [{
@@ -26,7 +25,7 @@ var missiles = [];
 
 function drawPlayer() {
     document.querySelector('.player').style.right = player.right + "px";
-    document.querySelector('.player').style.bottom = player.bottom + "px";
+    document.querySelector('.player').style.top = player.top + "px";
 }
 
 function drawEnimies(i) {
@@ -37,29 +36,28 @@ function drawEnimies(i) {
 function drawMissiles() {
     var content = '';
     for (var i = 0; i < missiles.length; i++) {
-        content += `<div class = "missile" style = "right:${missiles[i].right}px ; bottom: ${missiles[i].bottom}px"></div>`;
+        content += `<div class = "missile" style = "right:${missiles[i].right}px ; top: ${missiles[i].top}px"></div>`;
     }
     document.querySelector('#missiles').innerHTML = content;
 }
 
 document.onkeydown = function(e) {
-    console.log(e);
     if (e.code == "ArrowLeft" && player.right < 1190) {
         player.right += 10;
     }
     if (e.code == "ArrowRight" && player.right > 0) {
         player.right -= 10;
     }
-    if (e.code == "ArrowDown" && player.bottom > 10) {
-        player.bottom -= 10;
+    if (e.code == "ArrowDown" && player.top < 470) {
+        player.top += 10;
     }
-    if (e.code == "ArrowUp" && player.bottom < 150) {
-        player.bottom += 10;
+    if (e.code == "ArrowUp" && player.top > 300) {
+        player.top -= 10;
     }
     if (e.code == "Space") {
         missiles.push({
-            right: player.right + 23,
-            bottom: player.bottom + 65
+            right: player.right + 20,
+            top: player.top
         })
         drawMissiles();
     }
@@ -76,7 +74,16 @@ function freeMove() {
         drawEnimies(i);
     }
     for (var i = 0; i < missiles.length; i++) {
-        missiles[i]['bottom'] += 2;
+        missiles[i]['top'] -= 2;
+    }
+
+}
+
+function collision() {
+    for (i = 0; i < enemies.length; i++) {
+        if (enemies[i]['top'] == player['top'] && enemies[i]['right'] == player['right']) {
+            console.log('colide', player['right'] + "" + player['top']);
+        }
     }
 
 }
@@ -84,4 +91,5 @@ function freeMove() {
 var timer = setInterval(function() {
     freeMove();
     drawMissiles();
+    collision()
 }, 10);
